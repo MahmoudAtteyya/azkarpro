@@ -16,24 +16,30 @@ export function usePWA() {
 
   useEffect(() => {
     const handleBeforeInstallPrompt = (e: Event) => {
+      // Prevent Chrome 67 and earlier from automatically showing the prompt
       e.preventDefault();
+      // Stash the event so it can be triggered later.
       setDeferredPrompt(e as BeforeInstallPromptEvent);
       setIsInstallable(true);
+      console.log('🟢 التطبيق جاهز للتثبيت');
     };
 
     const handleAppInstalled = () => {
       setIsInstalled(true);
       setIsInstallable(false);
       setDeferredPrompt(null);
+      console.log('✅ تم تثبيت التطبيق بنجاح');
     };
+
+    // Check if app is already installed
+    if (window.matchMedia('(display-mode: standalone)').matches ||
+        (navigator as any).standalone === true) {
+      setIsInstalled(true);
+      console.log('📱 التطبيق مثبت بالفعل');
+    }
 
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
     window.addEventListener('appinstalled', handleAppInstalled);
-
-    // Check if app is already installed
-    if (window.matchMedia('(display-mode: standalone)').matches) {
-      setIsInstalled(true);
-    }
 
     return () => {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
@@ -42,20 +48,33 @@ export function usePWA() {
   }, []);
 
   const installApp = async () => {
-    if (!deferredPrompt) return;
+    if (!deferredPrompt) {
+      console.log('❌ لا يوجد حدث تثبيت متاح');
+      return;
+    }
 
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    
-    if (outcome === 'accepted') {
+    try {
+      console.log('🔄 عرض نافذة التثبيت');
+      // Show the install prompt
+      await deferredPrompt.prompt();
+      
+      // Wait for the user to respond to the prompt
+      const choiceResult = await deferredPrompt.userChoice;
+      
+      if (choiceResult.outcome === 'accepted') {
+        console.log('✅ تم قبول التثبيت');
+        setIsInstalled(true);
+        setIsInstallable(false);
+      } else {
+        console.log('❌ تم رفض التثبيت');
+      }
+    } catch (error) {
+      console.error('💥 خطأ في التثبيت:', error);
+    } finally {
+      // Clear the deferredPrompt for the next time
       setDeferredPrompt(null);
-      setIsInstallable(false);
     }
   };
 
-  return {
-    isInstallable,
-    isInstalled,
-    installApp
-  };
+  return { isInstallable, isInstalled, installApp };
 }
