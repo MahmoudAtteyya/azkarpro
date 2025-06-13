@@ -6,44 +6,26 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      registerType: 'prompt',
-      includeAssets: ['favicon.svg'],
+      devOptions: {
+        enabled: true
+      },
+      includeAssets: ['favicon.svg', 'apple-touch-icon.png', 'masked-icon.svg'],
       manifest: {
         name: 'أذكار المسلم',
         short_name: 'أذكار',
-        description: 'تطبيق الأذكار الإسلامية اليومية',
+        description: 'تطبيق الأذكار الإسلامية - احرص على أذكارك اليومية',
         theme_color: '#6A1B9A',
         background_color: '#ffffff',
         display: 'standalone',
-        id: '/',
-        start_url: '/',
         scope: '/',
+        start_url: '/',
         orientation: 'portrait',
         icons: [
           {
             src: 'favicon.svg',
-            sizes: 'any',
+            sizes: '48x48 72x72 96x96 128x128 256x256 512x512',
             type: 'image/svg+xml',
             purpose: 'any'
-          }
-        ]
-      },
-      workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
-        runtimeCaching: [
-          {
-            urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
-            handler: 'CacheFirst',
-            options: {
-              cacheName: 'google-fonts-cache',
-              expiration: {
-                maxEntries: 10,
-                maxAgeSeconds: 60 * 60 * 24 * 365
-              },
-              cacheableResponse: {
-                statuses: [0, 200]
-              }
-            }
           }
         ]
       }
