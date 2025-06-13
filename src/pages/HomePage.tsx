@@ -59,7 +59,6 @@ export default function HomePage() {
         keywords={['أذكار', 'إسلام', 'أدعية', 'أذكار الصباح', 'أذكار المساء', 'القرآن']}
       />
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50/30 to-pink-50/30 dark:from-gray-900 dark:via-purple-900/20 dark:to-pink-900/20">
-        {/* Hero Section */}
         <div className="relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-purple-600/10 to-pink-600/10 dark:from-purple-900/30 dark:to-pink-900/30" />
           <motion.div 
@@ -68,26 +67,15 @@ export default function HomePage() {
             transition={{ duration: 0.8 }}
             className="relative max-w-6xl mx-auto px-4 py-20 text-center"
           >
-            <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
+            <motion.h1
+              initial={{ scale: 0.7, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="mb-8"
+              className="text-4xl md:text-5xl font-bold mb-8 bg-gradient-to-r from-purple-600 via-purple-700 to-pink-600 bg-clip-text text-transparent"
             >
-              <div className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-gradient-to-br from-purple-600 to-purple-700 shadow-2xl mb-6">
-                <span className="text-3xl font-bold text-white">أ</span>
-              </div>
-            </motion.div>
-            
-            <motion.h1 
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-purple-600 via-purple-700 to-pink-600 bg-clip-text text-transparent"
-            >
-              تطبيق الأذكار الإسلامية
+             الأذكار اليومية
             </motion.h1>
-            
+
             <motion.p 
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
@@ -119,12 +107,7 @@ export default function HomePage() {
             transition={{ duration: 0.6, delay: 0.6 }}
             className="text-center mb-12"
           >
-            <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-4">
-              اختر نوع الأذكار
-            </h2>
-            <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-lg">
-              اختر من بين مجموعة متنوعة من الأذكار المستحبة في أوقات مختلفة من اليوم
-            </p>
+            
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">

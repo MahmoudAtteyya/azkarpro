@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Minus, Plus, Check } from 'lucide-react';
 import { useAthkar } from '../context/AthkarContext';
@@ -19,11 +19,22 @@ export default function ThikrItem({ thikr, category, index }: ThikrItemProps) {
   const isCompleted = currentCount >= thikr.defaultCount;
   const remaining = Math.max(0, thikr.defaultCount - currentCount);
 
+  // صوت الكليك عند الإكمال
+  const clickAudio = useRef<HTMLAudioElement | null>(null);
+  if (!clickAudio.current) {
+    clickAudio.current = typeof Audio !== 'undefined' ? new Audio('/sounds/click.mp3') : null;
+  }
+
   const handleIncrement = () => {
+    if (isCompleted) return;
     incrementCounter(category, thikr.id);
     // Add haptic feedback for mobile devices
     if ('vibrate' in navigator) {
       navigator.vibrate(50);
+    }
+    if (currentCount + 1 >= thikr.defaultCount && clickAudio.current) {
+      clickAudio.current.currentTime = 0;
+      clickAudio.current.play();
     }
   };
 
@@ -96,7 +107,8 @@ export default function ThikrItem({ thikr, category, index }: ThikrItemProps) {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={handleIncrement}
-            className="flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-r from-purple-600 to-purple-700 text-white hover:from-purple-700 hover:to-purple-800 transition-all duration-200 shadow-lg hover:shadow-xl"
+            disabled={isCompleted}
+            className="flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-r from-purple-600 to-purple-700 text-white hover:from-purple-700 hover:to-purple-800 transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <Plus className="w-6 h-6" />
           </motion.button>

@@ -21,11 +21,11 @@ export default function AthkarCard({ title, icon, path, description, index }: At
     >
       <Link
         to={path}
-        className="block relative overflow-hidden rounded-2xl bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm p-8 shadow-xl hover:shadow-2xl transition-all duration-300 border border-purple-200/30 dark:border-purple-800/30 hover:border-purple-300/50 dark:hover:border-purple-700/50"
+        className="block relative overflow-hidden rounded-2xl bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm p-8 shadow-xl hover:shadow-2xl transition-all duration-300 border border-purple-200/30 dark:border-purple-800/30 hover:border-purple-300/50 dark:hover:border-purple-700/50 min-h-[320px] flex flex-col"
       >
         <div className="absolute inset-0 bg-gradient-to-br from-purple-50/50 to-pink-50/50 dark:from-purple-900/20 dark:to-pink-900/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         
-        <div className="relative z-10 text-center">
+        <div className="relative z-10 text-center flex flex-col flex-1">
           <motion.div 
             whileHover={{ scale: 1.1, rotate: 5 }}
             className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-600 to-purple-700 text-white shadow-lg group-hover:shadow-purple-500/25"
@@ -37,7 +37,7 @@ export default function AthkarCard({ title, icon, path, description, index }: At
             {title}
           </h3>
           
-          <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-6">
+          <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-auto">
             {description}
           </p>
           

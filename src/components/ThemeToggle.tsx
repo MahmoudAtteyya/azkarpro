@@ -20,12 +20,12 @@ export default function ThemeToggle() {
           rotate: theme === 'dark' ? 180 : 0,
           scale: theme === 'dark' ? 0.8 : 1,
         }}
-        transition={{ duration: 0.3, ease: 'easeInOut' }}
+        transition={{ duration: 0.5, ease: 'easeInOut' }}
       >
         {theme === 'light' ? (
-          <Sun className="w-5 h-5 text-yellow-600" />
+          <Sun className="w-8 h-8 text-yellow-600" />
         ) : (
-          <Moon className="w-5 h-5 text-purple-300" />
+          <Moon className="w-8 h-8 text-purple-300" />
         )}
       </motion.div>
     </motion.button>
