@@ -1,13 +1,13 @@
 {
-  "name": "My Progressive Web App",
-  "short_name": "MyApp",
+  "name": "تطبيق الأذكار الإسلامية",
+  "short_name": "الأذكار",
   "description": "تطبيق الأذكار الإسلامية اليومية",
-  "theme_color": "#000000",
+  "theme_color": "#6A1B9A",
   "background_color": "#ffffff",
   "display": "standalone",
   "orientation": "portrait",
-  "scope": "/",
-  "start_url": ".",
+  "scope": "./",
+  "start_url": "./",
   "lang": "ar",
   "dir": "rtl",
   "icons": [
