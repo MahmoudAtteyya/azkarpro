@@ -6,11 +6,24 @@ import ThikrItem from '../components/ThikrItem';
 import { useAthkar } from '../context/AthkarContext';
 import SEO from '../components/SEO';
 
+// Import JSON data
+import morningAthkar from '../data/morning.json';
+import eveningAthkar from '../data/evening.json';
+import wakeAthkar from '../data/wake.json';
+import sleepAthkar from '../data/sleep.json';
+
 interface Thikr {
   id: number;
   text: string;
   defaultCount: number;
 }
+
+const athkarData: { [key: string]: Thikr[] } = {
+  morning: morningAthkar,
+  evening: eveningAthkar,
+  wake: wakeAthkar,
+  sleep: sleepAthkar
+};
 
 const categoryTitles: { [key: string]: string } = {
   wake: 'أذكار الاستيقاظ من النوم',
@@ -33,21 +46,12 @@ export default function AthkarPage() {
   const { counters, resetCounters } = useAthkar();
 
   useEffect(() => {
-    const loadAthkar = async () => {
-      try {
-        setLoading(true);
-        const response = await fetch(`/src/data/${category}.json`);
-        const data = await response.json();
-        setAthkar(data);
-      } catch (error) {
-        console.error('Error loading athkar:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (category) {
-      loadAthkar();
+    if (category && category in athkarData) {
+      setAthkar(athkarData[category]);
+      setLoading(false);
+    } else {
+      setAthkar([]);
+      setLoading(false);
     }
   }, [category]);
 
