@@ -11,7 +11,7 @@ export function registerServiceWorker() {
       onOfflineReady() {
         console.log('التطبيق جاهز للعمل بدون إنترنت');
       },
-      onRegistered(registration) {
+      onRegistered() {
         console.log('تم تسجيل Service Worker');
       },
       onRegisterError(error) {
