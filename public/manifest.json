@@ -5,37 +5,47 @@
   "theme_color": "#6A1B9A",
   "background_color": "#ffffff",
   "display": "standalone",
-  "orientation": "portrait",
-  "scope": "/",
+  "id": "/",
   "start_url": "/",
-  "lang": "ar",
-  "dir": "rtl",
+  "scope": "/",
+  "orientation": "portrait",
   "icons": [
     {
       "src": "logo192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
       "src": "logo512.png",
       "sizes": "512x512",
-      "type": "image/png"
-    }
-  ],
-  "categories": ["lifestyle", "utilities"],
-  "screenshots": [
-    {
-      "src": "/screenshot-wide.png",
-      "sizes": "1280x720",
       "type": "image/png",
-      "form_factor": "wide"
+      "purpose": "any"
     },
     {
-      "src": "/screenshot-narrow.png",
-      "sizes": "750x1334",
+      "src": "logo192.png",
+      "sizes": "192x192",
       "type": "image/png",
-      "form_factor": "narrow"
+      "purpose": "maskable"
+    },
+    {
+      "src": "logo512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ],
-  "prefer_related_applications": false
+  "shortcuts": [
+    {
+      "name": "أذكار الصباح",
+      "url": "/morning",
+      "description": "قراءة أذكار الصباح"
+    },
+    {
+      "name": "أذكار المساء",
+      "url": "/evening",
+      "description": "قراءة أذكار المساء"
+    }
+  ],
+  "categories": ["lifestyle", "utilities"]
 }

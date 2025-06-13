@@ -3,19 +3,11 @@ import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
-  base: '/',
   plugins: [
     react(),
     VitePWA({
-      devOptions: {
-        enabled: true,
-        type: 'module'
-      },
-      srcDir: 'src',
-      filename: 'sw.ts',
-      strategies: 'injectManifest',
-      injectRegister: 'auto',
-      registerType: 'autoUpdate',
+      registerType: 'prompt',
+      includeAssets: ['favicon.svg'],
       manifest: {
         name: 'أذكار المسلم',
         short_name: 'أذكار',
@@ -23,59 +15,37 @@ export default defineConfig({
         theme_color: '#6A1B9A',
         background_color: '#ffffff',
         display: 'standalone',
-        orientation: 'portrait',
-        scope: '/',
+        id: '/',
         start_url: '/',
-        prefer_related_applications: false,
+        scope: '/',
+        orientation: 'portrait',
         icons: [
           {
-            src: 'pwa-192x192.png',
-            sizes: '192x192',
-            type: 'image/png',
+            src: 'favicon.svg',
+            sizes: 'any',
+            type: 'image/svg+xml',
             purpose: 'any'
-          },
-          {
-            src: 'pwa-512x512.png',
-            sizes: '512x512',
-            type: 'image/png',
-            purpose: 'any'
-          },
-          {
-            src: 'pwa-maskable-192x192.png',
-            sizes: '192x192',
-            type: 'image/png',
-            purpose: 'maskable'
-          },
-          {
-            src: 'pwa-maskable-512x512.png',
-            sizes: '512x512',
-            type: 'image/png',
-            purpose: 'maskable'
-          }
-        ],
-        shortcuts: [
-          {
-            name: 'أذكار الصباح',
-            short_name: 'الصباح',
-            description: 'أذكار الصباح',
-            url: '/morning'
-          },
-          {
-            name: 'أذكار المساء',
-            short_name: 'المساء',
-            description: 'أذكار المساء',
-            url: '/evening'
           }
         ]
       },
-      injectManifest: {
-        injectionPoint: undefined
-      },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,json}'],
-        cleanupOutdatedCaches: true,
-        clientsClaim: true,
-        skipWaiting: true
+        globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
+        runtimeCaching: [
+          {
+            urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'google-fonts-cache',
+              expiration: {
+                maxEntries: 10,
+                maxAgeSeconds: 60 * 60 * 24 * 365
+              },
+              cacheableResponse: {
+                statuses: [0, 200]
+              }
+            }
+          }
+        ]
       }
     })
   ]
