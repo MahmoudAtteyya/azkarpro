@@ -2,44 +2,24 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
-// https://vitejs.dev/config/
 export default defineConfig({
-  base: './',
+  base: '/',
   plugins: [
     react(),
     VitePWA({
-      strategies: 'generateSW',
-      registerType: 'prompt',
-      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
-      workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,json}'],
-        runtimeCaching: [
-          {
-            urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
-            handler: 'CacheFirst',
-            options: {
-              cacheName: 'google-fonts-cache',
-              expiration: {
-                maxEntries: 10,
-                maxAgeSeconds: 60 * 60 * 24 * 365 // <== 365 days
-              },
-              cacheableResponse: {
-                statuses: [0, 200]
-              }
-            }
-          }
-        ]
-      },
+      strategies: 'injectManifest',
+      registerType: 'autoUpdate',
+      filename: 'sw.ts',
       manifest: {
-        name: 'تطبيق الأذكار الإسلامية',
-        short_name: 'الأذكار',
+        name: 'أذكار المسلم',
+        short_name: 'أذكار',
         description: 'تطبيق الأذكار الإسلامية اليومية',
         theme_color: '#6A1B9A',
         background_color: '#ffffff',
         display: 'standalone',
         orientation: 'portrait',
-        scope: './',
-        start_url: './',
+        scope: '/',
+        start_url: '/',
         prefer_related_applications: false,
         icons: [
           {
@@ -55,16 +35,53 @@ export default defineConfig({
             purpose: 'any'
           },
           {
-            src: 'pwa-512x512.png',
+            src: 'pwa-maskable-192x192.png',
+            sizes: '192x192',
+            type: 'image/png',
+            purpose: 'maskable'
+          },
+          {
+            src: 'pwa-maskable-512x512.png',
             sizes: '512x512',
             type: 'image/png',
             purpose: 'maskable'
           }
+        ],
+        shortcuts: [
+          {
+            name: 'أذكار الصباح',
+            short_name: 'الصباح',
+            description: 'أذكار الصباح',
+            url: '/morning',
+            icons: [{ src: 'morning.png', sizes: '192x192' }]
+          },
+          {
+            name: 'أذكار المساء',
+            short_name: 'المساء',
+            description: 'أذكار المساء',
+            url: '/evening',
+            icons: [{ src: 'evening.png', sizes: '192x192' }]
+          }
         ]
+      },
+      injectManifest: {
+        swSrc: 'src/sw.ts',
+        swDest: 'dist/sw.js',
+        globDirectory: 'dist',
+        globPatterns: [
+          '**/*.{html,js,css,json,ico,png,svg}'
+        ]
+      },
+      workbox: {
+        cleanupOutdatedCaches: true,
+        clientsClaim: true,
+        skipWaiting: true
+      },
+      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
+      devOptions: {
+        enabled: true,
+        type: 'module'
       }
     })
-  ],
-  optimizeDeps: {
-    exclude: ['lucide-react'],
-  },
+  ]
 });
