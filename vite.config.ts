@@ -7,9 +7,15 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      strategies: 'injectManifest',
-      registerType: 'autoUpdate',
+      devOptions: {
+        enabled: true,
+        type: 'module'
+      },
+      srcDir: 'src',
       filename: 'sw.ts',
+      strategies: 'injectManifest',
+      injectRegister: 'auto',
+      registerType: 'autoUpdate',
       manifest: {
         name: 'أذكار المسلم',
         short_name: 'أذكار',
@@ -52,35 +58,24 @@ export default defineConfig({
             name: 'أذكار الصباح',
             short_name: 'الصباح',
             description: 'أذكار الصباح',
-            url: '/morning',
-            icons: [{ src: 'morning.png', sizes: '192x192' }]
+            url: '/morning'
           },
           {
             name: 'أذكار المساء',
             short_name: 'المساء',
             description: 'أذكار المساء',
-            url: '/evening',
-            icons: [{ src: 'evening.png', sizes: '192x192' }]
+            url: '/evening'
           }
         ]
       },
       injectManifest: {
-        swSrc: 'src/sw.ts',
-        swDest: 'dist/sw.js',
-        globDirectory: 'dist',
-        globPatterns: [
-          '**/*.{html,js,css,json,ico,png,svg}'
-        ]
+        injectionPoint: undefined
       },
       workbox: {
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,json}'],
         cleanupOutdatedCaches: true,
         clientsClaim: true,
         skipWaiting: true
-      },
-      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
-      devOptions: {
-        enabled: true,
-        type: 'module'
       }
     })
   ]

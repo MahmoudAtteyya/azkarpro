@@ -1,25 +1,27 @@
 /// <reference lib="webworker" />
-import { precacheAndRoute } from 'workbox-precaching';
-import { registerRoute } from 'workbox-routing';
-import { StaleWhileRevalidate, CacheFirst } from 'workbox-strategies';
+import { clientsClaim } from 'workbox-core';
+import { precacheAndRoute, createHandlerBoundToURL } from 'workbox-precaching';
+import { registerRoute, NavigationRoute } from 'workbox-routing';
+import { CacheFirst, StaleWhileRevalidate } from 'workbox-strategies';
 import { CacheableResponsePlugin } from 'workbox-cacheable-response';
 import { ExpirationPlugin } from 'workbox-expiration';
 
 declare let self: ServiceWorkerGlobalScope;
 
-// Precache all assets
+// Use with precache injection
 precacheAndRoute(self.__WB_MANIFEST);
 
-// Cache Google Fonts
+// Cache the Google Fonts stylesheets with a stale-while-revalidate strategy
 registerRoute(
-  ({ url }) => url.origin === 'https://fonts.googleapis.com',
+  /^https:\/\/fonts\.googleapis\.com/,
   new StaleWhileRevalidate({
     cacheName: 'google-fonts-stylesheets',
   })
 );
 
+// Cache the underlying font files with a cache-first strategy for 1 year
 registerRoute(
-  ({ url }) => url.origin === 'https://fonts.gstatic.com',
+  /^https:\/\/fonts\.gstatic\.com/,
   new CacheFirst({
     cacheName: 'google-fonts-webfonts',
     plugins: [
@@ -27,28 +29,35 @@ registerRoute(
         statuses: [0, 200],
       }),
       new ExpirationPlugin({
-        maxAgeSeconds: 60 * 60 * 24 * 365, // 1 Year
+        maxAgeSeconds: 60 * 60 * 24 * 365, // 1 year
         maxEntries: 30,
       }),
     ],
   })
 );
 
-// Cache assets
+// Cache static assets
 registerRoute(
-  ({ request }) =>
-    request.destination === 'script' ||
-    request.destination === 'style' ||
-    request.destination === 'image',
+  /\.(?:js|css|json|png|jpg|jpeg|svg|gif)$/,
   new StaleWhileRevalidate({
     cacheName: 'static-resources',
   })
 );
 
-self.addEventListener('install', () => {
-  self.skipWaiting();
+// Default SPA fallback
+const handler = createHandlerBoundToURL('/index.html');
+const navigationRoute = new NavigationRoute(handler, {
+  allowlist: [new RegExp('^/(?!/api/).*')],
+});
+registerRoute(navigationRoute);
+
+// This allows the web app to trigger skipWaiting via
+// registration.waiting.postMessage({type: 'SKIP_WAITING'})
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
 });
 
-self.addEventListener('activate', (event) => {
-  event.waitUntil(self.clients.claim());
-});
+// Any other custom service worker logic can go here
+clientsClaim();
