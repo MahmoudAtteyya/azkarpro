@@ -9,50 +9,63 @@ const InstallButton: React.FC = () => {
 
   useEffect(() => {
     const handler = (e: any) => {
-      console.log('🟢 قبل تثبيت التطبيق');
+      // حفظ حدث التثبيت للاستخدام لاحقًا
       e.preventDefault();
       setDeferredPrompt(e);
       setShowInstallButton(true);
+      console.log('🟢 التطبيق جاهز للتثبيت');
     };
 
     // التحقق من حالة التثبيت الحالية
-    if (window.matchMedia('(display-mode: standalone)').matches) {
-      console.log('📱 التطبيق مثبت بالفعل');
-      setShowInstallButton(false);
-    }
+    const checkInstallation = () => {
+      if (window.matchMedia('(display-mode: standalone)').matches || 
+          (navigator as any).standalone === true) {
+        console.log('📱 التطبيق مثبت بالفعل');
+        setShowInstallButton(false);
+        return true;
+      }
+      return false;
+    };
 
-    window.addEventListener('beforeinstallprompt', handler);
+    if (!checkInstallation()) {
+      window.addEventListener('beforeinstallprompt', handler);
+    }
 
     return () => window.removeEventListener('beforeinstallprompt', handler);
   }, []);
 
   const handleInstallClick = async () => {
+    console.log('🔄 بدء عملية التثبيت');
     setShowModal(true);
   };
 
   const handleModalInstall = async () => {
     if (!deferredPrompt) {
-      console.log('❌ لا يوجد تثبيت متاح');
+      console.log('❌ لا يوجد حدث تثبيت متاح');
       return;
     }
 
     try {
-      console.log('🔄 جاري تثبيت التطبيق...');
+      console.log('🔄 عرض نافذة التثبيت');
+      // إظهار نافذة التثبيت
       await deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
       
-      if (outcome === 'accepted') {
-        console.log('✅ تم قبول التثبيت');
+      // انتظار اختيار المستخدم
+      const choiceResult = await deferredPrompt.userChoice;
+      
+      if (choiceResult.outcome === 'accepted') {
+        console.log('✅ تم قبول التثبيت بنجاح');
         setShowInstallButton(false);
+        setShowModal(false);
       } else {
         console.log('❌ تم رفض التثبيت');
       }
     } catch (error) {
-      console.error('💥 خطأ في التثبيت:', error);
+      console.error('💥 خطأ في عملية التثبيت:', error);
+    } finally {
+      // تنظيف حدث التثبيت
+      setDeferredPrompt(null);
     }
-
-    setDeferredPrompt(null);
-    setShowModal(false);
   };
 
   if (!showInstallButton) return null;
@@ -79,4 +92,4 @@ const InstallButton: React.FC = () => {
   );
 };
 
-export default InstallButton; 
+export default InstallButton;
