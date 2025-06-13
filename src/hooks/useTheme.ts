@@ -9,7 +9,7 @@ export function useTheme() {
       if (saved === 'light' || saved === 'dark') {
         return saved;
       }
-      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      return 'light'; // تعيين الوضع الفاتح كوضع افتراضي
     }
     return 'light';
   });

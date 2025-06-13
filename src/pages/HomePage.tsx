@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Sun, Moon, Sunrise, Sunset, Sparkles, Heart, Shield, Download } from 'lucide-react';
+import { Sun, Moon, Sunrise, Sunset, Sparkles, Heart, Shield } from 'lucide-react';
 import AthkarCard from '../components/AthkarCard';
 import SEO from '../components/SEO';
 import { Link } from 'react-router-dom';
@@ -179,17 +179,6 @@ export default function HomePage() {
               ))}
             </div>
           </div>
-        </div>
-
-        <div className="fixed bottom-6 left-6 z-50">
-          <Link
-            to="/download"
-            className="flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-full shadow-lg backdrop-blur-md hover:from-purple-700 hover:to-purple-800 transition-all duration-300 text-lg font-semibold"
-            style={{ boxShadow: '0 4px 24px 0 rgba(80,0,120,0.12)' }}
-          >
-            <Download className="w-6 h-6" />
-            <span>تحميل التطبيق</span>
-          </Link>
         </div>
       </div>
     </>
