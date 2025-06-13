@@ -12,6 +12,7 @@ export default function Navbar({ onResetAll }: NavbarProps) {
   const navigate = useNavigate();
   const location = useLocation();
   const isHomePage = location.pathname === '/';
+  const isDownloadPage = location.pathname === '/download';
 
   return (
     <motion.nav
@@ -22,57 +23,38 @@ export default function Navbar({ onResetAll }: NavbarProps) {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center space-x-4 space-x-reverse">
-            <Link 
-              to="/" 
-              className="flex items-center space-x-3 space-x-reverse text-purple-700 dark:text-purple-300 hover:text-purple-800 dark:hover:text-purple-200 transition-colors duration-200"
-            >
-              <motion.div 
-                whileHover={{ rotate: 360 }}
-                transition={{ duration: 0.6 }}
-                className="w-10 h-10 bg-gradient-to-br from-purple-600 to-purple-700 rounded-xl flex items-center justify-center shadow-lg"
+            {!isHomePage && (
+              <button
+                onClick={() => navigate(-1)}
+                className="inline-flex items-center text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300"
               >
-                <span className="text-white font-bold text-lg">أ</span>
-              </motion.div>
-              <h1 className="text-xl font-bold bg-gradient-to-r from-purple-600 to-purple-800 bg-clip-text text-transparent">
-                تطبيق الأذكار
-              </h1>
-            </Link>
+                <ArrowRight className="w-5 h-5" />
+                <span className="mr-1">رجوع</span>
+              </button>
+            )}
           </div>
 
-          <div className="flex items-center space-x-4 space-x-reverse">
-            <ThemeToggle />
-            
-            {!isHomePage && (
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => navigate(-1)}
-                className="flex items-center space-x-2 space-x-reverse px-4 py-2 text-purple-600 dark:text-purple-300 hover:text-purple-700 dark:hover:text-purple-200 hover:bg-purple-50 dark:hover:bg-purple-900/30 rounded-lg transition-all duration-200"
-              >
-                <ArrowRight className="w-4 h-4" />
-                <span>رجوع</span>
-              </motion.button>
-            )}
-            
-            <Link
+          {!isHomePage && !isDownloadPage && (
+            <Link 
               to="/"
-              className="flex items-center space-x-2 space-x-reverse px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-300 hover:bg-purple-50 dark:hover:bg-purple-900/30 rounded-lg transition-all duration-200"
+              className="inline-flex items-center text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300"
             >
-              <Home className="w-4 h-4" />
-              <span>الرئيسية</span>
+              <Home className="w-5 h-5" />
+              <span className="mr-1">الرئيسية</span>
             </Link>
+          )}
 
-            {onResetAll && (
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+          <div className="flex items-center space-x-4 space-x-reverse">
+            {!isDownloadPage && !isHomePage && onResetAll && (
+              <button
                 onClick={onResetAll}
-                className="flex items-center space-x-2 space-x-reverse px-4 py-2 text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-all duration-200"
+                className="inline-flex items-center text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300"
               >
-                <RotateCcw className="w-4 h-4" />
-                <span>إعادة ضبط الكل</span>
-              </motion.button>
+                <RotateCcw className="w-5 h-5" />
+                <span className="mr-1">إعادة ضبط</span>
+              </button>
             )}
+            <ThemeToggle />
           </div>
         </div>
       </div>

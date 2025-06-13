@@ -1,7 +1,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Download, Smartphone, Globe, Shield, ArrowLeft } from 'lucide-react';
+import { Smartphone, Globe, Shield, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import InstallButton from '../components/InstallButton';
 
 const DownloadPage: React.FC = () => {
   return (
@@ -84,7 +85,7 @@ const DownloadPage: React.FC = () => {
               </p>
             </motion.div>
           </div>
-
+          
           {/* زر التحميل */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -92,16 +93,7 @@ const DownloadPage: React.FC = () => {
             transition={{ delay: 0.4 }}
             className="text-center"
           >
-            <button
-              onClick={() => {
-                // سيتم تنفيذ عملية التثبيت هنا
-                console.log('بدء عملية التثبيت');
-              }}
-              className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-xl font-medium hover:from-purple-700 hover:to-purple-800 transition-all duration-300 shadow-lg hover:shadow-xl"
-            >
-              <Download className="w-6 h-6" />
-              <span>تحميل التطبيق</span>
-            </button>
+            <InstallButton />
           </motion.div>
         </motion.div>
       </div>
@@ -109,4 +101,4 @@ const DownloadPage: React.FC = () => {
   );
 };
 
-export default DownloadPage; 
+export default DownloadPage;
