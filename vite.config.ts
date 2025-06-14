@@ -9,7 +9,14 @@ export default defineConfig({
       devOptions: {
         enabled: true
       },
-      includeAssets: ['favicon.svg', 'apple-touch-icon.png', 'masked-icon.svg'],
+      includeAssets: [
+        'favicon.svg',
+        'apple-touch-icon.png',
+        'masked-icon.svg',
+        'images/logo-black.png',
+        'images/logo-white.png',
+        'icons/app-icon.png'
+      ],
       manifest: {
         name: 'أذكار المسلم',
         short_name: 'أذكار',
@@ -22,10 +29,22 @@ export default defineConfig({
         orientation: 'portrait',
         icons: [
           {
-            src: 'favicon.svg',
-            sizes: '48x48 72x72 96x96 128x128 256x256 512x512',
-            type: 'image/svg+xml',
+            src: 'icons/app-icon.png',
+            sizes: '192x192',
+            type: 'image/png',
             purpose: 'any'
+          },
+          {
+            src: 'icons/app-icon.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'any'
+          },
+          {
+            src: 'icons/app-icon.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'maskable'
           }
         ]
       }
