@@ -76,7 +76,7 @@ function App() {
                   </Suspense>
                 </AnimatePresence>
                 <InstallPWA />
-                <InstallButton />
+                
               </div>
             </Router>
           </AthkarProvider>

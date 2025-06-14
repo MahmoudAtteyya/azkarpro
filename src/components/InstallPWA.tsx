@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Download } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
   userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
