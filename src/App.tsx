@@ -8,6 +8,7 @@ import ErrorBoundary from './components/ErrorBoundary';
 import Navbar from './components/Navbar';
 import InstallPWA from './components/InstallPWA';
 import InstallButton from './components/InstallButton';
+import { useNotifications } from './hooks/useNotifications';
 
 // Lazy load pages for better performance
 const HomePage = React.lazy(() => import('./pages/HomePage'));
@@ -22,6 +23,9 @@ const LoadingSpinner = () => (
 );
 
 function App() {
+  // Initialize notifications
+  useNotifications();
+
   return (
     <HelmetProvider>
       <ErrorBoundary>
@@ -76,7 +80,6 @@ function App() {
                   </Suspense>
                 </AnimatePresence>
                 <InstallPWA />
-                
               </div>
             </Router>
           </AthkarProvider>

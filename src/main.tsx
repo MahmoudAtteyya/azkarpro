@@ -8,7 +8,7 @@ import { registerSW } from 'virtual:pwa-register';
 // Register service worker
 if ('serviceWorker' in navigator) {
   registerSW({
-    immediate: true,
+    immediate: false,
     onNeedRefresh() {
       if (confirm('يوجد تحديث جديد. هل تريد تحديث التطبيق؟')) {
         window.location.reload();
