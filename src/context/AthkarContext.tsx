@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useReducer, useEffect } from 'react';
+import React, { createContext, useContext, useReducer, useEffect, useRef } from 'react';
 
 interface Thikr {
   id: number;
@@ -68,6 +68,18 @@ function athkarReducer(state: CounterState, action: Action): CounterState {
 
 export function AthkarProvider({ children }: { children: React.ReactNode }) {
   const [counters, dispatch] = useReducer(athkarReducer, {});
+  const resetSound = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    // Initialize audio element
+    resetSound.current = new Audio('/sounds/reset.mp3');
+    resetSound.current.preload = 'auto';
+    
+    // Add error handling
+    resetSound.current.onerror = (e) => {
+      console.error('Error loading reset sound:', e);
+    };
+  }, []);
 
   useEffect(() => {
     const savedState = localStorage.getItem('athkar-counters');
@@ -97,8 +109,17 @@ export function AthkarProvider({ children }: { children: React.ReactNode }) {
     dispatch({ type: 'RESET_CATEGORY', category, athkar });
   };
 
-  const resetAllCounters = () => {
+  const resetAllCounters = async () => {
     dispatch({ type: 'RESET_ALL' });
+    
+    try {
+      if (resetSound.current) {
+        resetSound.current.currentTime = 0;
+        await resetSound.current.play();
+      }
+    } catch (error) {
+      console.error('Error playing reset sound:', error);
+    }
   };
 
   return (
